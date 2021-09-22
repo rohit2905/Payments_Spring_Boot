@@ -1,0 +1,207 @@
+<title>EzPayments</title>
+<head>
+
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    <style>
+        .register {
+            background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+            margin-top: 3%;
+            padding: 3%;
+        }
+        
+        .register-left {
+            text-align: center;
+            color: #fff;
+            margin-top: 4%;
+        }
+        
+        .register-left input {
+            border: none;
+            border-radius: 1.5rem;
+            padding: 2%;
+            width: 60%;
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #383d41;
+            margin-top: 30%;
+            margin-bottom: 3%;
+            cursor: pointer;
+        }
+        
+        .register-right {
+            background: #f8f9fa;
+            border-top-left-radius: 10% 50%;
+            border-bottom-left-radius: 10% 50%;
+        }
+        
+        .register-left img {
+            margin-top: 15%;
+            margin-bottom: 5%;
+            width: 25%;
+            -webkit-animation: mover 2s infinite alternate;
+            animation: mover 1s infinite alternate;
+        }
+        
+        @-webkit-keyframes mover {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        @keyframes mover {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .register-left p {
+            font-weight: lighter;
+            padding: 12%;
+            margin-top: -9%;
+        }
+        
+        .register .register-form {
+            padding: 10%;
+            margin-top: 10%;
+        }
+        
+        .btnRegister {
+            float: right;
+            margin-top: 10%;
+            border: none;
+            border-radius: 1.5rem;
+            padding: 2%;
+            background: #0062cc;
+            color: #fff;
+            font-weight: 600;
+            width: 50%;
+            cursor: pointer;
+        }
+        
+        .register .nav-tabs {
+            margin-top: 3%;
+            border: none;
+            background: #0062cc;
+            border-radius: 1.5rem;
+            width: 28%;
+            float: right;
+        }
+        
+        .register .nav-tabs .nav-link {
+            padding: 2%;
+            height: 34px;
+            font-weight: 600;
+            color: #fff;
+            border-top-right-radius: 1.5rem;
+            border-bottom-right-radius: 1.5rem;
+        }
+        
+        .register .nav-tabs .nav-link:hover {
+            border: none;
+        }
+        
+        .register .nav-tabs .nav-link.active {
+            width: 100px;
+            color: #0062cc;
+            border: 2px solid #0062cc;
+            border-top-left-radius: 1.5rem;
+            border-bottom-left-radius: 1.5rem;
+        }
+        
+        .register-heading {
+            text-align: center;
+            margin-top: 8%;
+            margin-bottom: -15%;
+            color: #495057;
+        }
+    </style>
+
+</head>
+
+<div class="container register">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+            <h3>EzPayments</h3>
+            <p>Carry your money transactions here!</p>
+
+        </div>
+        <div class="col-md-9 register-right">
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h3 class="register-heading">Make a Transaction</h3>
+
+                    <form #f="ngForm" (ngSubmit)="onadd()" class="form-group" (keydown.enter)="$event.preventDefault()">
+                        <div class="row register-form">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> Account Number</label>
+                                    <input required class="form-control" type="number" id="name" max=15 [(ngModel)]="model.acc_no" name="acc_no" #acc_no="ngModel" (keyup.enter)="onCheck($event)">
+                                </div>
+                                <div class="form-group">
+                                    <label>Account Holder Name</label>
+                                    <input class="form-control" readonly value="{{acc_holder_name}}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Credit Balance</label>
+                                    <input required class="form-control" type="text" value="{{acc_credit_bal | currency:'INR'}}" readonly="readonly">
+                                </div>
+                                <div class="form-group">
+                                    <label>BIC</label>
+                                    <input required class="form-control" type="text" [(ngModel)]="model.bic" name="bic" #bic="ngModel" (keyup.enter)="getBIC($event)">
+                                </div>
+                                <div class="form-group">
+                                    <label>Bank Name</label>
+                                    <input class="form-control" type="text" value={{ins}} readonly>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Receiver Name</label>
+                                    <input class="form-control" type="text" [(ngModel)]="model.receiver_name" name="receiver_name" #receiver_name="ngModel">
+                                </div>
+                                <div class="form-group">
+                                    <label>Receiver Account Number</label>
+                                    <input required class="form-control" type="number" max=15 [(ngModel)]="model.receiver_acc_no" name="receiver_acc_no" #receiver_acc_no="ngModel">
+                                </div>
+                                <div class="form-group">
+                                    <label>Transfer Type</label>
+                                    <select class="form-control" name="transaction_type" [(ngModel)]="model.transaction_type" #transaction_type="ngModel" required>
+                                    <option class ="form-control" value="Customer Transfer">Customer Transfer</option>
+                                    <option value="Bank Transfer">Bank Transfer</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Message Code</label>
+                                    <select class="form-control" name="message_code" name="message_code" [(ngModel)]="model.message_code" name="message_code" #message_code="ngModel" required>
+                                    <option *ngFor="let item of message_codes" value="{{item.message_code}}">{{item.message_code}}</option>
+                                </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input required class="form-control" type="number" max=15 [(ngModel)]="model.amount" name="amount" #amount="ngModel">
+                                    <div style="margin-top: 10px;">
+                                        <b>Transaction Fee: &nbsp;</b> {{model.amount * 0.25 | currency:'INR'}}
+                                    </div>
+                                </div>
+
+                                <input type="submit" class="btnRegister" value="Send" />
+
+
+                            </div>
+
+                        </div>
+                    </form>
+                </div>

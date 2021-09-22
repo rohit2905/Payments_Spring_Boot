@@ -1,0 +1,20 @@
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<h1 mat-dialog-title>EzPayments</h1>
+<hr>
+<mat-dialog-content>{{data.status}} &nbsp;
+    <mat-icon *ngIf="data.show; else elseBlock" style="color:green;">check</mat-icon>
+    <ng-template #elseBlock>
+        <mat-icon style="color:red;">cancelsharp</mat-icon>
+    </ng-template>
+</mat-dialog-content><br>
+<mat-dialog-content><mark>{{data.tid}}</mark></mat-dialog-content>
+<mat-dialog-content>
+    <p *ngIf="clic">Remaining Balance: &nbsp;{{bal | currency:'INR'}}</p>
+</mat-dialog-content> &nbsp; &nbsp;
+<mat-dialog-actions>
+    <button type="button" class="btn btn-info" *ngIf="data.show" mat-button (click)="onc()">{{btext}}</button>&nbsp;&nbsp;
+    <button class="btn btn-danger" mat-raised-button mat-dialog-close mat-dialog-close="true">Close</button>
+</mat-dialog-actions>
